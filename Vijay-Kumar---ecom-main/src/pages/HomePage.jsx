@@ -6,6 +6,35 @@ import ProductCard from '../components/ProductCard';
 
 export default function HomePage() {
   const navigate = useNavigate();
+
+  // Hero gem slideshow
+  const heroGems = [
+    { src: '/images/ruby.png', name: 'Ruby', color: '#C0150F', planet: 'Sun ☉' },
+    { src: '/images/blue_sapphire.png', name: 'Blue Sapphire', color: '#1B4FD8', planet: 'Saturn ♄' },
+    { src: '/images/emerald.png', name: 'Emerald', color: '#1A7A4A', planet: 'Mercury ☿' },
+    { src: '/images/yellow_sapphire.png', name: 'Yellow Sapphire', color: '#C89B00', planet: 'Jupiter ♃' },
+    { src: '/images/pearl.png', name: 'Pearl', color: '#7A9EB0', planet: 'Moon ☽' },
+    { src: '/images/coral.png', name: 'Red Coral', color: '#C0392B', planet: 'Mars ♂' },
+    { src: '/images/hessonite.png', name: 'Hessonite', color: '#B35A1F', planet: 'Rahu ☊' },
+    { src: '/images/cats_eye.png', name: "Cat's Eye", color: '#5A5A4A', planet: 'Ketu ☋' },
+    { src: '/images/opal.png', name: 'Opal', color: '#9B59B6', planet: 'Venus ♀' },
+  ];
+  const [heroIdx, setHeroIdx] = useState(0);
+  const [heroPrev, setHeroPrev] = useState(null);
+  const [heroFading, setHeroFading] = useState(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroPrev(heroIdx);
+      setHeroFading(true);
+      setTimeout(() => {
+        setHeroIdx((i) => (i + 1) % heroGems.length);
+        setHeroFading(false);
+        setHeroPrev(null);
+      }, 700);
+    }, 3200);
+    return () => clearInterval(timer);
+  }, [heroIdx]);
   // Gemstone Finder widget state — Step 1: birth month, Step 2: birth star, Step 3: result
   const [finderStep, setFinderStep] = useState(1);
   const [finderMonth, setFinderMonth] = useState('');
@@ -462,41 +491,200 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ═══ HERO SECTION ═══ */}
-      <section className="hero-section hero-home-section" style={{ padding: 0, borderBottom: 'none' }}>
+      {/* ═══ HERO SECTION — Two-column: gem slideshow + birthstone finder ═══ */}
+      <section className="vk-hero-split">
+        {/* LEFT — Cinematic GEM STONES typography + gem-as-O animation */}
+        <div className="vk-hero-left">
+          <div className="vk-hero-typo">
 
-        {/* Image + overlays wrapper — absolute on desktop, flow on mobile */}
-        <div className="hero-image-wrap">
-          <div
-            className="hero-bg hero-home-bg"
-            style={{ backgroundImage: "url('/images/nine_gemstones_banner.png')" }}
-          ></div>
-          <div className="hero-home-overlay"></div>
-          <div className="hero-overlay-bottom-blend"></div>
+            {/* "GEM" — small vintage top word */}
+            <div className="vk-hero-gem-word">GEM</div>
 
-          {/* Desktop headline (hidden on mobile) */}
-          <div className="hero-home-content">
-            <div className="hero-home-text">
-              <span className="hero-home-tagline">Since Generations</span>
-              <h1 className="hero-home-headline" style={{ color: 'var(--color-dark)', textShadow: 'none' }}>Premium <em style={{ display: 'inline' }}>Diamonds</em> &amp; Gemstones</h1>
-              <p className="hero-home-subtext" style={{ color: 'var(--color-gray-600)' }}>
-                GIA &nbsp;·&nbsp; GRS &nbsp;·&nbsp; IGI Certified &nbsp;|&nbsp; BIS Hallmarked Gold
-              </p>
-              <div className="hero-home-actions">
-                <Link to="/shop" className="btn btn-gold btn-lg">Shop Collection</Link>
-                <Link to="/shop?type=gems" className="btn btn-white btn-lg">Loose Gemstones</Link>
+            {/* "STONES" row — ST + [gem circle = O] + NES */}
+            <div className="vk-hero-stones-row">
+              <span className="vk-hero-st">ST</span>
+
+              {/* The O = gem animation circle */}
+              <div className="vk-hero-o-circle">
+                {heroGems.map((gem, i) => (
+                  <div
+                    key={gem.name}
+                    className={`vk-hero-o-slide${i === heroIdx ? ' active' : ''}${heroFading && i === heroPrev ? ' fading-out' : ''}`}
+                  >
+                    <img src={gem.src} alt={gem.name} className="vk-hero-o-img" />
+                  </div>
+                ))}
+                {/* Colored ring that adapts to gem */}
+                <div
+                  className="vk-hero-o-ring"
+                  style={{ borderColor: heroGems[heroIdx].color }}
+                />
               </div>
+
+              <span className="vk-hero-nes">NES</span>
             </div>
+
+            {/* Gem name + planet tag below */}
+            <div className="vk-hero-gem-tag">
+              <span className="vk-hero-gem-tag-planet" style={{ color: heroGems[heroIdx].color }}>
+                {heroGems[heroIdx].planet}
+              </span>
+              <span className="vk-hero-gem-tag-name">{heroGems[heroIdx].name}</span>
+            </div>
+
+            {/* Dot navigation */}
+            <div className="vk-hero-typo-dots">
+              {heroGems.map((_, i) => (
+                <button
+                  key={i}
+                  className={`vk-hero-dot${i === heroIdx ? ' active' : ''}`}
+                  onClick={() => setHeroIdx(i)}
+                  aria-label={heroGems[i].name}
+                  style={i === heroIdx ? { background: heroGems[heroIdx].color } : {}}
+                />
+              ))}
+            </div>
+
+          </div>
+
+          {/* Brand watermark */}
+          <div className="vk-hero-brand-mark">
+            <span>VK</span>
+            <span className="vk-hero-brand-sub">Certified Gemstones</span>
           </div>
         </div>
 
-        {/* Desktop floating widget — positioned absolute inside section */}
-        <div className="hero-widget-overlay-desktop">{renderSearchWidget()}</div>
 
-        {/* Mobile widget — inside the section, below the gem image */}
-        <div className="hero-widget-in-section">{renderSearchWidget()}</div>
+        {/* RIGHT — Find Your Birthstone */}
+        <div className="vk-hero-right">
+          <div className="vk-hero-finder-wrap">
+            {/* Header */}
+            <div className="vk-finder-header">
+              <span className="vk-finder-label">VK Finder</span>
+              <h1 className="vk-finder-title">
+                {finderStep === 3 ? 'Your Gemstone Match' : 'Find Your Birthstone'}
+              </h1>
+              <p className="vk-finder-desc">
+                {finderStep === 3
+                  ? 'Based on your Nakshatra & planetary lord'
+                  : 'Discover your sacred planetary gemstone by birth month & Nakshatra'}
+              </p>
+            </div>
 
+            {/* Progress dots */}
+            <div className="vk-finder-steps">
+              {[1, 2, 3].map((s) => (
+                <div key={s} className={`vk-finder-step-bar${finderStep >= s ? ' done' : ''}`} />
+              ))}
+            </div>
+
+            {/* Step 1 */}
+            {finderStep === 1 && (
+              <div className="vk-finder-body">
+                <label className="vk-finder-field-label">Step 1 of 2 — Your Birth Month</label>
+                <div className="vk-finder-select-wrap">
+                  <select
+                    value={finderMonth}
+                    onChange={(e) => setFinderMonth(e.target.value)}
+                    className="vk-finder-select"
+                  >
+                    <option value="">Select Birth Month</option>
+                    {months.map((m) => (
+                      <option key={m} value={m}>{m}</option>
+                    ))}
+                  </select>
+                  <i className="fas fa-chevron-down vk-finder-select-icon" />
+                </div>
+                <button
+                  className={`vk-finder-btn${!finderMonth ? ' disabled' : ''}`}
+                  disabled={!finderMonth}
+                  onClick={() => finderMonth && setFinderStep(2)}
+                >
+                  Continue <i className="fas fa-arrow-right" />
+                </button>
+              </div>
+            )}
+
+            {/* Step 2 */}
+            {finderStep === 2 && (
+              <div className="vk-finder-body">
+                <label className="vk-finder-field-label">Step 2 of 2 — Birth Star (Nakshatra)</label>
+                <div className="vk-finder-select-wrap">
+                  <select
+                    value={finderStar}
+                    onChange={(e) => setFinderStar(e.target.value)}
+                    className="vk-finder-select"
+                  >
+                    <option value="">Select Birth Star</option>
+                    {nakshatras.map((n) => (
+                      <option key={n.name} value={n.name}>{n.name}</option>
+                    ))}
+                  </select>
+                  <i className="fas fa-chevron-down vk-finder-select-icon" />
+                </div>
+                <div style={{ display: 'flex', gap: '0.6rem' }}>
+                  <button className="vk-finder-back-btn" onClick={() => setFinderStep(1)} aria-label="Back">
+                    <i className="fas fa-arrow-left" />
+                  </button>
+                  <button
+                    className={`vk-finder-btn${!finderStar ? ' disabled' : ''}`}
+                    disabled={!finderStar}
+                    onClick={() => finderStar && setFinderStep(3)}
+                    style={{ flex: 1 }}
+                  >
+                    Reveal My Gem <i className="fas fa-gem" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Step 3 — Result */}
+            {finderStep === 3 && finderGem && finderGemName && (
+              <div className="vk-finder-body">
+                <div className="vk-finder-result-card" style={{ borderColor: finderGem.color + '55', background: finderGem.color + '0D' }}>
+                  <img src={gemImages[finderGemName]} alt={finderGemName} className="vk-finder-result-img" />
+                  <div>
+                    <span className="vk-finder-result-planet" style={{ color: finderGem.color }}>
+                      {finderGem.tagName} · {finderGem.planet}
+                    </span>
+                    <h3 className="vk-finder-result-name">{finderGemName}</h3>
+                  </div>
+                </div>
+                <ul className="vk-finder-benefits">
+                  {finderGem.benefits.map((b, i) => (
+                    <li key={i}>
+                      <i className="fas fa-gem" style={{ color: finderGem.color }} />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to={`/shop?cat=${encodeURIComponent(finderGemName)}`}
+                  className="vk-finder-shop-btn"
+                  style={{ background: finderGem.color }}
+                >
+                  Shop {finderGemName}
+                </Link>
+                <a
+                  href={finderWaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="vk-finder-wa-btn"
+                >
+                  <i className="fab fa-whatsapp" />
+                  Talk to Our Expert
+                </a>
+                <button className="vk-finder-reset" onClick={resetFinder}>Start Over</button>
+              </div>
+            )}
+
+            <Link to="/shop" className="vk-finder-browse-link">
+              Browse full collection →
+            </Link>
+          </div>
+        </div>
       </section>
+
 
       {/* ═══ GEM CIRCLES — SHOP BY GEMSTONE ═══ */}
       <section className="section reveal" id="gem-circles-section">
