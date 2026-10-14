@@ -725,6 +725,7 @@ export default function HomePage() {
                   {gem.name.toUpperCase()}
                 </h3>
                 <p className="gem-card-benefit">{gem.desc}</p>
+                <span className="gem-card-arrow">View Collection &rarr;</span>
               </div>
             ))}
           </div>

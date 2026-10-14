@@ -627,12 +627,18 @@ min-width: 0;
     background: var(--color-white);
     z-index: 96;
     transform: translateX(-100%);
-    transition: transform var(--duration-slow) var(--ease-lux);
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform var(--duration-slow) var(--ease-lux), visibility var(--duration-slow);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
 }
-.mobile-menu.open { transform: translateX(0); }
+.mobile-menu.open { 
+    transform: translateX(0); 
+    visibility: visible;
+    pointer-events: auto;
+}
 @media (min-width: 1024px) { .mobile-menu, .mobile-menu-overlay { display: none !important; } }
 
 .mobile-menu-header {
@@ -1365,13 +1371,21 @@ min-width: 0;
 }
 @media (min-width: 768px) { 
     .category-scroll { 
-        gap: 1.25rem; 
-        margin-left: 0;
-        margin-right: 0;
-        padding-left: 0;
-        padding-right: 0;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.5rem !important; 
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        overflow-x: visible !important;
     } 
-    .category-scroll::after { display: none; }
+    .category-card {
+        flex: none !important;
+        width: 100% !important;
+        aspect-ratio: 3/4 !important;
+    }
+    .category-scroll::after { display: none !important; }
 }
 
 .category-card {
@@ -1450,108 +1464,222 @@ min-width: 0;
 }
 
 /* ============================================
-   GEM CIRCLE CAROUSEL (Like GemPundit)
+   GEM CIRCLE FILTER (Clean Responsive Wrap)
    ============================================ */
 .gem-circles {
     display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 1rem 1.25rem;
-    margin-left: -1.25rem;
-    margin-right: -1.25rem;
-    justify-content: flex-start;
-    -webkit-overflow-scrolling: touch;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.65rem 0.35rem;
+    padding: 0.5rem 0 1rem;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: visible;
+    box-sizing: border-box;
+}
+.gem-circles::-webkit-scrollbar {
+    display: none;
 }
 .gem-circles::after {
-    content: '';
-    flex: 0 0 1px;
+    display: none;
 }
-@media (min-width: 768px) {
+
+@media (min-width: 640px) {
     .gem-circles { 
-        justify-content: center; 
-        gap: 1.5rem; 
-        margin-left: 0;
-        margin-right: 0;
-        padding-left: 0;
-        padding-right: 0;
+        gap: 1rem 1.25rem; 
+        padding: 0.75rem 0 1.25rem;
+        max-width: 100%;
     }
-    .gem-circles::after { display: none; }
 }
 @media (min-width: 1024px) {
-    .gem-circles { gap: 2rem; }
+    .gem-circles { 
+        gap: 1.25rem 1.75rem; 
+        padding: 1rem 0 1.5rem;
+        max-width: 1200px;
+    }
+}
+@media (min-width: 1280px) {
+    .gem-circles { 
+        gap: 1.5rem 2rem; 
+    }
 }
 
 .gem-circle {
-    flex: 0 0 auto;
+    flex: 0 0 58px;
+    width: 58px;
+    max-width: 58px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.35rem;
     cursor: pointer;
+    text-align: center;
     transition: transform var(--duration-normal) var(--ease-lux);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
 }
 
-.gem-circle:hover { transform: translateY(-4px); }
+@media (max-width: 360px) {
+    .gem-circle {
+        flex: 0 0 52px;
+        width: 52px;
+        max-width: 52px;
+    }
+}
 
+@media (min-width: 640px) {
+    .gem-circle {
+        flex: 0 0 72px;
+        width: 72px;
+        max-width: 72px;
+        gap: 0.45rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .gem-circle {
+        flex: 0 0 84px;
+        width: 84px;
+        max-width: 84px;
+        gap: 0.5rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .gem-circle {
+        flex: 0 0 90px;
+        width: 90px;
+        max-width: 90px;
+    }
+}
+
+.gem-circle:hover { transform: translateY(-3px); }
 
 .gem-circle-img {
-    width: 80px;
-    height: 80px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0;
-    overflow: visible;
-    border: none;
-    background: transparent;
-    transition: transform var(--duration-normal) var(--ease-lux);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.98), rgba(246,243,235,0.85));
+    border: 1.5px solid rgba(212,175,55,0.22);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    padding: 0.35rem;
+    position: relative;
+    transition: all var(--duration-normal) var(--ease-lux);
+    box-sizing: border-box;
 }
-@media (min-width: 768px) {
-    .gem-circle-img { width: 110px; height: 110px; }
+
+@media (max-width: 360px) {
+    .gem-circle-img {
+        width: 42px;
+        height: 42px;
+        padding: 0.25rem;
+    }
+}
+
+@media (min-width: 640px) {
+    .gem-circle-img { width: 64px; height: 64px; padding: 0.5rem; }
+}
+
+@media (min-width: 1024px) {
+    .gem-circle-img { width: 76px; height: 76px; padding: 0.6rem; }
+}
+
+@media (min-width: 1280px) {
+    .gem-circle-img { width: 82px; height: 82px; padding: 0.65rem; }
 }
 
 /* For icon-only circle images (the 'All' category button) */
 .gem-circle-img.icon-circle {
     border-radius: var(--radius-full);
-    border: 2px solid var(--color-gray-200);
-    background: var(--color-gray-50);
-    overflow: hidden;
-    transition: border-color var(--duration-normal), box-shadow var(--duration-normal), background-color var(--duration-normal);
+    border: 1.5px solid rgba(212,175,55,0.3);
+    background: var(--color-dark);
+    color: var(--color-gold);
+    font-size: 1rem;
+}
+
+@media (min-width: 640px) {
+    .gem-circle-img.icon-circle { font-size: 1.15rem; }
 }
 
 .gem-circle:hover .gem-circle-img.icon-circle,
 .gem-circle.active .gem-circle-img.icon-circle {
     border-color: var(--color-gold);
-    box-shadow: var(--shadow-gold);
-    background: var(--color-dark) !important;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+    background: var(--color-gold) !important;
+    color: var(--color-dark) !important;
+}
+
+.gem-circle:hover .gem-circle-img,
+.gem-circle.active .gem-circle-img {
+    border-color: var(--color-gold);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+    background: radial-gradient(circle at 35% 35%, #ffffff, #fdf8ee);
+    transform: translateY(-2px);
 }
 
 .gem-circle-img img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transform: scale(1.1);
+    transform: scale(0.95);
     transition: transform var(--duration-slow) var(--ease-lux), filter var(--duration-normal);
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12)) brightness(1.1) contrast(1.05) saturate(1.1);
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.14));
 }
 
 .gem-circle:hover .gem-circle-img img,
 .gem-circle.active .gem-circle-img img {
-    transform: scale(1.25);
-    filter: drop-shadow(0 10px 18px rgba(212, 175, 55, 0.45)) brightness(1.15) contrast(1.1) saturate(1.15);
+    transform: scale(1.12);
+    filter: drop-shadow(0 6px 12px rgba(212, 175, 55, 0.45));
 }
 
 .gem-circle-label {
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: 0.52rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.02em;
     color: var(--color-gray-600);
     text-align: center;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.15;
+    width: 100%;
+    max-width: 58px;
+    word-break: break-word;
+    transition: color var(--duration-normal);
 }
-@media (min-width: 768px) {
-    .gem-circle-label { font-size: 0.8rem; }
+
+@media (max-width: 360px) {
+    .gem-circle-label {
+        font-size: 0.48rem;
+        max-width: 52px;
+    }
+}
+
+@media (min-width: 640px) {
+    .gem-circle-label { 
+        font-size: 0.68rem; 
+        max-width: 72px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .gem-circle-label { 
+        font-size: 0.74rem; 
+        max-width: 84px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .gem-circle-label { 
+        font-size: 0.78rem; 
+        max-width: 90px;
+    }
 }
 
 .gem-circle:hover .gem-circle-label,
@@ -1584,13 +1712,19 @@ min-width: 0;
     background: var(--color-white);
     z-index: 86;
     transform: translateX(100%);
-    transition: transform var(--duration-slow) var(--ease-lux);
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform var(--duration-slow) var(--ease-lux), visibility var(--duration-slow);
     display: flex;
     flex-direction: column;
     box-shadow: -10px 0 30px rgba(0,0,0,0.1);
 }
 
-.sidebar.open { transform: translateX(0); }
+.sidebar.open { 
+    transform: translateX(0); 
+    visibility: visible;
+    pointer-events: auto;
+}
 
 .sidebar-header {
     display: flex;
@@ -2860,19 +2994,32 @@ textarea.form-input { resize: vertical; min-height: 100px; }
     
     /* Gem Circles Filter / Shop by Gemstone */
     .gem-circles {
-        gap: 0.6rem;
-        padding: 0.5rem 0;
+        gap: 0.65rem 0.35rem;
+        padding: 0.5rem 0 0.75rem;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .gem-circle {
+        flex: 0 0 58px;
+        width: 58px;
+        max-width: 58px;
     }
     .gem-circle-img {
-        width: 64px;
-        height: 64px;
+        width: 48px;
+        height: 48px;
+        padding: 0.35rem;
     }
     .gem-circle-img.icon-circle {
         border-width: 1.5px;
+        font-size: 1rem;
     }
     .gem-circle-label {
-        font-size: 0.6rem;
-        letter-spacing: 0.05em;
+        font-size: 0.52rem;
+        letter-spacing: 0.02em;
+        max-width: 58px;
+        line-height: 1.15;
     }
     
     /* Product Grid and Card Adjustments */
@@ -4840,8 +4987,8 @@ textarea.form-input { resize: vertical; min-height: 100px; }
    GEM CIRCLES — LARGER ON DESKTOP
    ============================================ */
 @media (min-width: 1280px) {
-    .gem-circle-img { width: 120px; height: 120px; }
-    .gem-circle-label { font-size: 0.85rem; }
+    .gem-circle-img { width: 88px; height: 88px; padding: 0.65rem; }
+    .gem-circle-label { font-size: 0.78rem; }
 }
 
 /* ============================================
@@ -4924,11 +5071,20 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 .gem-pundit-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    margin-top: 2.5rem;
+    gap: 0.85rem;
+    margin-top: 1.75rem;
+    width: 100%;
+    align-items: stretch;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
+    .gem-pundit-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+@media (min-width: 1024px) {
     .gem-pundit-grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 1.5rem;
@@ -4936,30 +5092,51 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 }
 
 .gem-pundit-card {
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    padding: 0.5rem;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
-    transition: transform 0.25s var(--ease-lux);
+    text-align: center;
+    justify-content: flex-start;
 }
+
+.gem-card-arrow {
+    margin-top: auto;
+    padding-top: 0.75rem;
+}
+
+.gem-pundit-card {
+    background: var(--color-white);
+    border: 1.5px solid rgba(212,175,55,0.18);
+    border-radius: 1rem;
+    padding: 1.15rem 0.75rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+    transition: transform 0.25s var(--ease-lux), box-shadow 0.25s var(--ease-lux), border-color 0.25s;
+    height: 100%;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
 @media (min-width: 768px) {
     .gem-pundit-card {
-        flex: 0 0 140px;
+        padding: 1.35rem 1rem 1rem;
     }
 }
 
 .gem-pundit-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
+    border-color: var(--color-gold);
+    box-shadow: 0 8px 24px rgba(212,175,55,0.18);
 }
 
 .gem-card-image-wrap {
-    width: 80px;
-    height: 80px;
-    border-radius: var(--radius-full);
+    width: 76px;
+    height: 76px;
     position: relative;
     display: flex;
     align-items: center;
@@ -4969,23 +5146,29 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 }
 @media (min-width: 768px) {
     .gem-card-image-wrap {
-        width: 100px;
-        height: 100px;
+        width: 90px;
+        height: 90px;
+        margin-bottom: 0.65rem;
     }
 }
 
 .gem-card-img {
-    width: 130px;
-    height: 130px;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
     z-index: 2;
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    /* No shadow on the image directly to keep blend mode clean */
-    mix-blend-mode: multiply;
+    transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
+}
+@media (min-width: 768px) {
+    .gem-card-img {
+        width: 82px;
+        height: 82px;
+    }
 }
 
 .gem-pundit-card:hover .gem-card-img {
-    transform: scale(1.12) translateY(-2px);
+    transform: scale(1.12);
 }
 
 /* Custom soft drop shadow underneath each gemstone */
@@ -4994,7 +5177,7 @@ textarea.form-input { resize: vertical; min-height: 100px; }
     bottom: -2px;
     left: 50%;
     transform: translateX(-50%);
-    width: 55px;
+    width: 50px;
     height: 6px;
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
     z-index: 1;
@@ -5008,38 +5191,69 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 
 .gem-card-name {
     font-family: var(--font-serif);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--color-dark);
-    margin-bottom: 0.6rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+    margin: 0 0 0.25rem 0;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
     transition: color 0.2s ease;
+}
+@media (min-width: 768px) {
+    .gem-card-name {
+        font-size: 0.9rem;
+        margin-bottom: 0.35rem;
+    }
 }
 
 .gem-pundit-card:hover .gem-card-name {
-    color: var(--color-gold);
+    color: var(--color-gold-dark);
+}
+
+.gem-card-benefit {
+    font-size: 0.68rem;
+    color: var(--color-gray-500);
+    line-height: 1.35;
+    margin: 0;
+    font-weight: 400;
+    width: 100%;
+    max-width: 200px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.7em;
+}
+@media (min-width: 768px) {
+    .gem-card-benefit {
+        font-size: 0.72rem;
+        min-height: 2.8em;
+    }
 }
 
 .gem-card-arrow {
-    font-size: 0.7rem;
-    color: var(--color-gray-400);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: auto;
+    padding-top: 0.65rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
     transition: transform 0.2s ease, color 0.2s ease;
+}
+@media (min-width: 768px) {
+    .gem-card-arrow {
+        font-size: 0.68rem;
+        padding-top: 0.75rem;
+    }
 }
 
 .gem-pundit-card:hover .gem-card-arrow {
     transform: translateX(3px);
-    color: var(--color-gold);
-}
-
-.gem-card-benefit {
-    font-size: 0.75rem;
-    color: var(--color-gray-500);
-    line-height: 1.45;
-    margin: 0;
-    font-weight: 400;
-    max-width: 180px;
+    color: var(--color-gold-dark);
 }
 
 /* ============================================
@@ -5327,18 +5541,23 @@ textarea.form-input { resize: vertical; min-height: 100px; }
     overflow-y: hidden !important;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
     .featured-scroll {
         display: grid !important;
         overflow-x: visible !important;
         overflow-y: visible !important;
-        grid-template-columns: repeat(4, 1fr) !important;
-        gap: 1.5rem !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.25rem !important;
         padding-bottom: 0 !important;
         scroll-snap-type: none !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
     
     .featured-product-wrapper {
+        width: 100% !important;
         min-width: 0 !important;
         max-width: none !important;
         flex: none !important;
@@ -5346,6 +5565,13 @@ textarea.form-input { resize: vertical; min-height: 100px; }
     
     .slider-wrapper .slider-nav-btn {
         display: none !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .featured-scroll {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 1.5rem !important;
     }
 }
 
@@ -5473,30 +5699,44 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 @media (max-width: 640px) {
     .gem-pundit-grid {
         grid-template-columns: repeat(2, 1fr) !important;
-        gap: 0.85rem !important;
+        gap: 0.75rem !important;
+    }
+    .gem-pundit-card {
+        padding: 0.95rem 0.6rem 0.75rem !important;
     }
     .gem-card-name {
-        font-size: 0.72rem !important;
+        font-size: 0.78rem !important;
+        margin-bottom: 0.2rem !important;
     }
     .gem-card-benefit {
         font-size: 0.65rem !important;
+        line-height: 1.3 !important;
+        min-height: 2.6em !important;
     }
     .gem-card-image-wrap {
-        height: 80px !important;
+        width: 68px !important;
+        height: 68px !important;
+        margin-bottom: 0.4rem !important;
     }
     .gem-card-img {
-        max-height: 64px !important;
+        width: 62px !important;
+        height: 62px !important;
+        max-height: 62px !important;
+    }
+    .gem-card-arrow {
+        font-size: 0.58rem !important;
+        padding-top: 0.45rem !important;
     }
 }
 
 /* ── Category scroll: full-width cards on mobile ── */
 @media (max-width: 640px) {
     .category-scroll {
-        gap: 0.75rem !important;
+        gap: 0.85rem !important;
     }
     .category-card {
-        min-width: 220px !important;
-        height: 160px !important;
+        min-width: 240px !important;
+        height: 200px !important;
     }
 }
 
@@ -5908,20 +6148,44 @@ textarea.form-input { resize: vertical; min-height: 100px; }
         gap: 0.85rem !important;
     }
     .category-scroll {
-        margin-left: -1.1rem !important;
-        margin-right: -1.1rem !important;
-        padding-left: 1.1rem !important;
-        padding-right: 1.1rem !important;
-        gap: 0.75rem !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.85rem !important;
+        overflow: visible !important;
+    }
+    .category-card {
+        flex: none !important;
+        width: 100% !important;
+        height: 135px !important;
+        aspect-ratio: auto !important;
     }
 
-    /* Ensure flex items in horizontal scroll never shrink/squish */
+    /* Display featured products as clean 2-column grid on mobile so no cards are half hidden */
+    .featured-scroll {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        overflow-x: visible !important;
+        scroll-snap-type: none !important;
+    }
+    
     .featured-product-wrapper {
-        width: 72vw !important;
-        min-width: 220px !important;
-        max-width: 260px !important;
-        flex: 0 0 auto !important;
-        flex-shrink: 0 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        flex: none !important;
+    }
+    
+    .slider-wrapper .slider-nav-btn {
+        display: none !important;
     }
     
     .testimonial-card {

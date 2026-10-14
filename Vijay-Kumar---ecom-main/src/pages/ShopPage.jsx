@@ -108,7 +108,7 @@ export default function ShopPage() {
   };
 
   return (
-    <main className="container" style={{ paddingTop: 'var(--space-xl)', paddingBottom: 'var(--space-4xl)' }}>
+    <main className="container shop-page-main" style={{ paddingTop: 'var(--space-xl)', paddingBottom: 'calc(var(--space-4xl) + 60px)' }}>
       <div className="breadcrumbs">
         <Link to="/">Home</Link> <span>/</span>
         {currentCategory === 'All' ? (
@@ -131,7 +131,7 @@ export default function ShopPage() {
       <section style={{ marginBottom: 'var(--space-2xl)' }}>
         <div className="gem-circles hide-scrollbar">
           <div onClick={() => selectCategory('All')} className={`gem-circle ${currentCategory === 'All' ? 'active' : ''}`} style={{ cursor: 'pointer' }}>
-            <div className="gem-circle-img icon-circle" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-dark)', color: 'var(--color-gold)', fontSize: '1.25rem' }}><i className="fas fa-th-large"></i></div>
+            <div className="gem-circle-img icon-circle"><i className="fas fa-th-large"></i></div>
             <span className="gem-circle-label">All</span>
           </div>
           {categoriesToRender.map(cat => (
@@ -145,13 +145,13 @@ export default function ShopPage() {
 
       {/* Gemstone Grid Selection when no category is active */}
       {currentCategory === 'All' && (
-        <section style={{ marginBottom: 'var(--space-3xl)' }}>
-          <div className="section-header" style={{ textAlign: 'left', marginBottom: 'var(--space-lg)' }}>
-            <h2 className="section-title" style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>Browse by Gemstone</h2>
-            <p className="section-subtitle" style={{ textAlign: 'left', marginLeft: 0, fontSize: '0.85rem' }}>
+        <section className="shop-gemstone-section" style={{ marginBottom: 'var(--space-2xl)' }}>
+          <div className="section-header" style={{ textAlign: 'left', marginBottom: 'var(--space-md)' }}>
+            <h2 className="section-title" style={{ fontSize: '1.4rem', marginBottom: '0.25rem' }}>Browse by Gemstone</h2>
+            <p className="section-subtitle" style={{ textAlign: 'left', marginLeft: 0, fontSize: '0.8rem' }}>
               Select a gemstone to view its dedicated collection and astrological benefits.
             </p>
-            <div className="gold-line" style={{ marginLeft: 0, marginTop: '0.5rem' }}></div>
+            <div className="gold-line" style={{ marginLeft: 0, marginTop: '0.4rem' }}></div>
           </div>
           <div className="gem-pundit-grid">
             {[
@@ -177,10 +177,11 @@ export default function ShopPage() {
                   <img src={gem.img} alt={gem.name} className="gem-card-img" />
                   <div className="gem-card-shadow"></div>
                 </div>
-                <h3 className="gem-card-name" style={{ margin: '0.75rem 0 0.25rem 0', fontSize: '0.95rem' }}>
+                <h3 className="gem-card-name">
                   {gem.name.toUpperCase()}
                 </h3>
-                <p className="gem-card-benefit" style={{ fontSize: '0.75rem', color: 'var(--color-gray-500)', lineHeight: '1.3' }}>{gem.desc}</p>
+                <p className="gem-card-benefit">{gem.desc}</p>
+                <span className="gem-card-arrow">View Collection &rarr;</span>
               </div>
             ))}
           </div>

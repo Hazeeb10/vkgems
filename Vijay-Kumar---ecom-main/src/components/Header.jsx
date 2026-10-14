@@ -129,12 +129,8 @@ export default function Header() {
             )}
 
             {isHome ? (
-              <Link to="/" className="logo-link">
-                <img src="/images/new logo.png" alt="VK Logo" className="logo-img" />
-                <span className="header-brand-name" style={{ marginLeft: 0 }}>
-                  VijayKumar
-                  <small>Diamonds &amp; Gems</small>
-                </span>
+              <Link to="/" className="logo-link" aria-label="VijayKumar Diamonds & Gems">
+                <img src="/vk logo og.png" alt="VijayKumar Diamonds & Gems" className="logo-img" />
               </Link>
             ) : (
               <div className="subpage-header-title">{getPageTitle(currentPage)}</div>
@@ -179,10 +175,9 @@ export default function Header() {
       {/* Mobile Menu Overlay */}
       <div className={`mobile-menu-overlay ${mobileMenuOpen ? 'open' : ''}`} onClick={() => setMobileMenuOpen(false)}></div>
       <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-        <div className="mobile-menu-header" style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
-          <img src="/images/logo.png" alt="VK Logo" className="logo-img" style={{ height: '30px', width: 'auto', border: 'none', borderRadius: 0 }} />
-          <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--color-dark)', letterSpacing: '0.05em' }}>VijayKumar</span>
-          <button onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '1.3rem', color: 'var(--color-dark)', marginLeft: 'auto' }}>
+        <div className="mobile-menu-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <img src="/vk logo og.png" alt="VijayKumar Diamonds & Gems" className="logo-img" style={{ height: '42px', width: 'auto', border: 'none', borderRadius: 0 }} />
+          <button onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '1.3rem', color: 'var(--color-dark)' }} aria-label="Close menu">
             <i className="fas fa-times"></i>
           </button>
         </div>
